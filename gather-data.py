@@ -7,7 +7,7 @@ PORT = 5700
 sensor = SensorUDP(PORT)
 activity = '' # standing, waving, jumping, ...
 is_tracking = False
-ROW_HEADER = ['label', 'accelerometer_x', 'accelerometer_y', 'accelerometer_z', 'accelerometer_avg']
+ROW_HEADER = ['label', 'timestamp', 'accelerometer_x', 'accelerometer_y', 'accelerometer_z', 'accelerometer_avg']
 MAX_COLLECTING_TIME = 5 # every motion will get recorderd for 5 seconds
 RECORD_FREQUENCY = 0.1 # seconds data will be transmitted, TODO probably lower number
 recording_time = 0 # how long recording is going on
@@ -17,14 +17,14 @@ num_walking = 0
 num_punching = 0
 
 print('How to gather data:')
-print('Press Button 1 to gather activity one')
-print('Press Button 2 to gather activity two')
-print('Press Button 3 to gather activity three')
-print('Then: do motion for xy seconds')
+print('Hold your phone in front of you (like reading a message)')
+print('Press Button 1 to gather standing-motion')
+print('Press Button 2 to gather walking-motion')
+print('Press Button 3 to gather punching-motion')
+print(f'Then: do motion for {MAX_COLLECTING_TIME} seconds')
 
 
 while (True):
-    # print('capabilities: ', sensor.get_capabilities())
 
     if(sensor.has_capability('button_1') and sensor.has_capability('button_2') and
        sensor.has_capability('button_3')):
@@ -33,19 +33,21 @@ while (True):
         button_three = sensor.get_value('button_3')
 
         if button_one == 1 and not is_tracking:
-            # start tracking activity 1
-            label = 'standing' # TODO automation which motion is recorded
+            # start tracking standing
+            label = 'standing'
             is_tracking = True
             num_standing += 1
             print("Starting to track standing-activity")
         if button_two == 1 and not is_tracking:
-            # start tracking activity 1
+            # start tracking walking
             label = 'walking'
+            num_walking += 1
             is_tracking = True
             print("Starting to track walking-activity")
         if button_three == 1 and not is_tracking:
-            # start tracking activity 1
+            # start tracking punching
             label = 'punching'
+            num_punching += 1
             is_tracking = True
             print("Starting to track punching-activity")
         
@@ -58,16 +60,23 @@ while (True):
 
             accelerometer_average = (accelerometer_x + accelerometer_y + accelerometer_y)/3
 
-            recorded_data.append([label, accelerometer_x, accelerometer_y, accelerometer_z, accelerometer_average])
-            print(f"Time: {recording_time} | {accelerometer_x} | {accelerometer_y} | {accelerometer_z} | {accelerometer_average}")
-            recording_time += 0.1
+            recorded_data.append([label, recording_time, accelerometer_x, accelerometer_y, accelerometer_z, accelerometer_average])
+            # print(f"Time: {recording_time} | {accelerometer_x} | {accelerometer_y} | {accelerometer_z} | {accelerometer_average}")
+            recording_time += RECORD_FREQUENCY
         
         if is_tracking and recording_time >= MAX_COLLECTING_TIME:
             # stop recording
             is_tracking = False
 
             # make csv data | alternative with pandas df.to_csv
-            file_name = './data/' + label + '01.csv' # TODO some more automation/information
+            file_number = 0;
+            if label == 'standing':
+                file_number = num_standing
+            elif label == 'walking':
+                file_number = num_walking
+            else:
+                file_number = num_punching
+            file_name = f'./data/{label}_{file_number}.csv'
             with open(file_name, 'w', newline='') as csvfile:
                 writer = csv.writer(csvfile, delimiter=' ',
                                         quotechar='|', quoting=csv.QUOTE_MINIMAL)
