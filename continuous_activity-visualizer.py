@@ -1,13 +1,10 @@
 # this program visualizes activities with pyglet
 import os
-
 import numpy as np
-# import activity_recognizer
-# from activity_recognizer import get_current_activity
 import pyglet
 from pyglet import window
 
-from activity_recognizer import ActivityRecognizer
+from continuous_activity_recognizer import ActivityRecognizer
 
 # Pyglet initialization
 WINDOW_WIDTH = 400
