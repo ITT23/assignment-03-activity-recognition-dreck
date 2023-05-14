@@ -28,7 +28,7 @@ class ActivityRecognizer:
         # the accelerometer_avg data of every recorded motion is processed with fft for better differentiation of motions
         # spectrum data gets saved as a array in a new dataframe with its corresponding label
         # classifier learns spectrum and not single accelerometer data /
-        # as preperation for this course I had some few notes (probably from last ITT-year) because I wanted to know how ML works
+        # as preperation for this course I had some few notes (probably from last ITT-year)
         # I used this note to make sure fft was a way to go /sabrina
         for file in csv_files:
             path = os.path.join(self.CSV_PATH, file)
