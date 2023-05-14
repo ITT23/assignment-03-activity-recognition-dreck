@@ -48,11 +48,16 @@ activity_text_label = pyglet.text.Label(text=f"Start to track your activities.",
 activity_text_label_explanation = pyglet.text.Label(text=f"Press button_1 to make a new detection.", x=10, y=360,
                                                     color=(0, 0, 0, 255), font_size= 10, batch=batch, group=foreground)
 
+
+# initialize the activity recognizer
 recognizer = ActivityRecognizer()
-print(recognizer)
+
 
 def check_prediction(dt):
+    # gets prediction from DIPPID sensor data
     predicted_label = recognizer.get_prediction()
+
+    # change picture accordingly to predicted data
     if predicted_label == 1:
         activity.image = standing_img
         activity_text_label.text = "standing detected!"
@@ -70,6 +75,6 @@ def on_draw():
     window.clear()
     batch.draw()
 
-pyglet.clock.schedule_interval(check_prediction, 0.1)
+pyglet.clock.schedule_interval(check_prediction, 0.01) # 0.01 for faster recognition
 pyglet.app.run()
 

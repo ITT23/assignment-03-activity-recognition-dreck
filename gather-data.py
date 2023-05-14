@@ -5,11 +5,11 @@ from DIPPID import SensorUDP
 
 PORT = 5700
 sensor = SensorUDP(PORT)
-activity = '' # standing, waving, jumping, ...
+activity = '' # standing, waving, punching, ...
 is_tracking = False
 ROW_HEADER = ['label', 'timestamp', 'accelerometer_x', 'accelerometer_y', 'accelerometer_z', 'accelerometer_avg']
 MAX_COLLECTING_TIME = 5 # every motion will get recorderd for 5 seconds
-RECORD_FREQUENCY = 0.1 # seconds data will be transmitted, TODO probably lower number
+RECORD_FREQUENCY = 0.1 # seconds data will be transmitted
 recording_time = 0 # how long recording is going on
 recorded_data = [] # all data in array
 num_standing = 0
@@ -53,22 +53,23 @@ while (True):
         
         if is_tracking and recording_time < MAX_COLLECTING_TIME:
             
-            # add or edit gyroscope, gravity (don't know what we need)
+            # gets accelerometer data from every axis
             accelerometer_x = sensor.get_value('accelerometer')['x']
             accelerometer_y = sensor.get_value('accelerometer')['y']
             accelerometer_z = sensor.get_value('accelerometer')['z']
 
+            # calculates the average of every axis, so holding the phone in different ways shouldn't make bigger differences
             accelerometer_average = (accelerometer_x + accelerometer_y + accelerometer_y)/3
 
+            # appends axis data to array for csv
             recorded_data.append([label, recording_time, accelerometer_x, accelerometer_y, accelerometer_z, accelerometer_average])
-            # print(f"Time: {recording_time} | {accelerometer_x} | {accelerometer_y} | {accelerometer_z} | {accelerometer_average}")
             recording_time += RECORD_FREQUENCY
         
         if is_tracking and recording_time >= MAX_COLLECTING_TIME:
             # stop recording
             is_tracking = False
 
-            # make csv data | alternative with pandas df.to_csv
+            # make csv data 
             file_number = 0;
             if label == 'standing':
                 file_number = num_standing
@@ -76,13 +77,20 @@ while (True):
                 file_number = num_walking
             else:
                 file_number = num_punching
-            file_name = f'./data/{label}_{file_number}.csv'
+
+            # creates a file name with current label and number of this motion
+            file_name = f'./data/{label}{file_number}.csv'
+
+            #writes the data into files
             with open(file_name, 'w', newline='') as csvfile:
                 writer = csv.writer(csvfile, delimiter=' ',
                                         quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 writer.writerow(ROW_HEADER)
                 writer.writerows(recorded_data)
+
             print("csv-file created, you can record another motion now")
+
+            # resets data and time for new motion
             is_tracking = False
             recording_time = 0
             recorded_data = []
