@@ -14,7 +14,6 @@ class ActivityRecognizer:
         self.PORT = 5700
         self.sensor = SensorUDP(self.PORT)
         self.CSV_PATH = './data'
-        self.SAMPLING_RATE = 10
         self.data = []
         self.classifier = self._train()
         self.recorded_data = []
