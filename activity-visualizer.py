@@ -7,7 +7,7 @@ import numpy as np
 import pyglet
 from pyglet import window
 
-from activity_recognizer import sensor, classifier
+from activity_recognizer import ActivityRecognizer
 
 # Pyglet initialization
 WINDOW_WIDTH = 400
@@ -51,57 +51,28 @@ activity_text_label = pyglet.text.Label(text=f"Start to track your activities.",
 activity_text_label_explanation = pyglet.text.Label(text=f"Press button_1 to make a new detection.", x=10, y=360,
                                                     color=(0, 0, 0, 255), font_size= 10, batch=batch, group=foreground)
 
+recognizer = ActivityRecognizer()
+print(recognizer)
+
+def check_prediction(dt):
+    predicted_label = recognizer.get_prediction()
+    if predicted_label == 1:
+        activity.image = standing_img
+        activity_text_label.text = "standing detected!"
+    elif predicted_label == 2:
+        activity.image = walking_img
+        activity_text_label.text = "walking detected!"
+    elif predicted_label == 3:
+        activity.image = punching_img
+        activity_text_label.text = "punching detected!"
+    else:
+        return
 
 @window.event
 def on_draw():
     window.clear()
     batch.draw()
 
-
-button_pressed = False
-recorded_data = []
-
-
-def change_image(label):
-    if label == 1:
-        activity.image = standing_img
-        activity_text_label.text = "standing detected!"
-    if label == 2:
-        activity.image = walking_img
-        activity_text_label.text = "walking detected!"
-    if label == 3:
-        activity.image = punching_img
-        activity_text_label.text = "punching detected!"
-    else:
-        return
-
-def get_label(dt):
-    global button_pressed
-    global recorded_data
-
-    if sensor.get_value('button_1') == 1:
-        recorded_data = []
-        button_pressed = True
-        print("Collecting activity data...")
-
-    if sensor.has_capability('accelerometer') and button_pressed:
-        accelerometer_x = sensor.get_value('accelerometer')['x']
-        accelerometer_y = sensor.get_value('accelerometer')['y']
-        accelerometer_z = sensor.get_value('accelerometer')['z']
-
-        accelerometer_average = (accelerometer_x + accelerometer_y + accelerometer_z) / 3
-        recorded_data.append(accelerometer_average)
-        if len(recorded_data) == 51:
-            activity_spectrum = np.abs(np.fft.fft(recorded_data))
-            label = classifier.predict([activity_spectrum])[0]
-            print(f"label: {label}")
-            change_image(label)
-            # recorded_data.pop(0)
-            button_pressed = False
-            print("Activity predicted...")
-
-
-pyglet.clock.schedule_interval(get_label, 0.01)
-
+pyglet.clock.schedule_interval(check_prediction, 0.1)
 pyglet.app.run()
 
