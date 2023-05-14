@@ -31,8 +31,7 @@ from University College London. He has published lots of stuff about deep learni
 
 D Scully is currently the CEO of Kaggle, a platform for data science, was the director of Google Brain and doing research about Machine Learning and Artificial Intelligence. 
 
-Gary Holt and Todd Phillips have only published two papers in the ML-research field. 
-
 Daniel Golovin has also published some machine learning papers in the past, works for Google Brain (leadership position in Pittsburgh) and founded Vizier, a optimization tool used at Google for machine learning models.
 
-Eugene Davydov has done a lot of research in the bio-informatics topic, mostly about computational biology.
+Eugene Davydov has done a lot of research in the bio-informatics topic, mostly about computational biology.Gary Holt and Todd Phillips have only published two papers in the ML-research field. To the other authors (Dietmar Ebner, Vinay Chaudhary, Michael Young) we could only find this paper. 
+
