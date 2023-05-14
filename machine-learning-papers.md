@@ -23,11 +23,11 @@ For example when the output of a model is also again the input of the same model
 ## What are the credentials of the authors with regard to machine learning? Have they published research on machine learning (or using machine-learning techniques) previously?
 
 Vassilis Kostakos is a computer engineering professor. His research interests are: ubiquitous computing, human-computer interaction, and social computing. He has a Ph.D. in computer science from the University of Bath.
-Worked with ML before, but not too much. Is not in his field of interest. Lots of stuff with mobile devices.
+Worked with ML before, but not too much. Is not in his field of interest. Nevertheless, he has published several papers with machine learning in the context of mobile devices.
 
 Mirco Musolesi is a reader in data science at UCL and Faculty Fellow at the Alan Turing
 Institute. His research interests lie at the intersection of ubiquitous computing, mobile sensing, large-scale data mining, and network science. He has a Ph.D. in computer science
-from University College London. 
+from University College London. He has published lots of stuff about deep learning, reinforcement learning and machine learning.
 
 D Scully is currently the CEO of Kaggle, a platform for data science, was the director of Google Brain and doing research about Machine Learning and Artificial Intelligence. 
 
