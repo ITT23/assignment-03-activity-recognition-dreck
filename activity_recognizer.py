@@ -69,9 +69,8 @@ class ActivityRecognizer:
             accelerometer_average = (accelerometer_x + accelerometer_y + accelerometer_z) / 3 
             self.recorded_data.append(accelerometer_average)
 
-            # training data is 50 samples long -> at 51 the first recorded sample is thrown out
+            # training data is 51 samples long -> at 51 label is predicted and stuff will be reset
             if len(self.recorded_data) == 51:
-                self.recorded_data.pop(0)
                 activity_spectrum = np.abs(np.fft.fft(self.recorded_data)) # fft
                 label = self.classifier.predict([activity_spectrum])[0] # prediction
                 print(f"label: {label}")
