@@ -1,6 +1,5 @@
 # this program visualizes activities with pyglet
 import os
-import numpy as np
 import pyglet
 from pyglet import window
 
@@ -22,7 +21,6 @@ white = white.create_image(window.width, window.height)
 white_bg = pyglet.sprite.Sprite(white, batch=batch, group=background)
 
 
-print("hello")
 # images:
 # https://www.svgrepo.com/svg/19155/running-stick-figure
 path_walking = os.path.join(".", "images", "walking.png")
@@ -42,11 +40,8 @@ question_img = pyglet.image.load(path_question)
 
 activity = pyglet.sprite.Sprite(question_img, x=60, y=50, batch=batch, group=foreground)
 
-activity_text_label = pyglet.text.Label(text=f"Start to track your activities.", x=10, y=380, color=(0, 0, 0, 255),
+activity_text_label = pyglet.text.Label(text=f"Start/Connect your DIPPID device", x=10, y=380, color=(0, 0, 0, 255),
                                         font_size=16, batch=batch, group=foreground)
-
-activity_text_label_explanation = pyglet.text.Label(text=f"Press button_1 to make a new detection.", x=10, y=360,
-                                                    color=(0, 0, 0, 255), font_size= 10, batch=batch, group=foreground)
 
 
 # initialize the activity recognizer
@@ -60,13 +55,13 @@ def check_prediction(dt):
     # change picture accordingly to predicted data
     if predicted_label == 1:
         activity.image = standing_img
-        activity_text_label.text = "standing detected!"
+        activity_text_label.text = "currently standing!"
     elif predicted_label == 2:
         activity.image = walking_img
-        activity_text_label.text = "walking detected!"
+        activity_text_label.text = "currently walking!"
     elif predicted_label == 3:
         activity.image = punching_img
-        activity_text_label.text = "punching detected!"
+        activity_text_label.text = "currently punching!"
     else:
         return
 

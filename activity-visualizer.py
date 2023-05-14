@@ -1,9 +1,5 @@
 # this program visualizes activities with pyglet
 import os
-
-import numpy as np
-# import activity_recognizer
-# from activity_recognizer import get_current_activity
 import pyglet
 from pyglet import window
 
@@ -25,7 +21,6 @@ white = white.create_image(window.width, window.height)
 white_bg = pyglet.sprite.Sprite(white, batch=batch, group=background)
 
 
-print("hello")
 # images:
 # https://www.svgrepo.com/svg/19155/running-stick-figure
 path_walking = os.path.join(".", "images", "walking.png")

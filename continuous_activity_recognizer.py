@@ -4,11 +4,9 @@ import pandas as pd
 import os
 from sklearn import svm
 from DIPPID import SensorUDP
-from time import sleep
 
-from sklearn.model_selection import GridSearchCV
 
-# holds DIPPID snsor data and the classifier
+# holds DIPPID sensor data and the classifier
 class ActivityRecognizer:
 
     def __init__(self):
